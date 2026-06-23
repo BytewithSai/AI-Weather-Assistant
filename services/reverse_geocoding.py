@@ -27,7 +27,7 @@ def get_city_from_coordinates(latitude, longitude):
 
         data = response.json()
 
-        print(data)
+        print("REVERSE DATA:", data)
 
         address = data.get("address", {})
 
