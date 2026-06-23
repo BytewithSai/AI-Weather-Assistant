@@ -14,21 +14,33 @@ def get_city_from_coordinates(latitude, longitude):
         "User-Agent": "AI-Weather-Assistant"
     }
 
-    response = requests.get(
-        url,
-        headers=headers
-    )
+    try:
 
-    data = response.json()
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=10
+        )
 
-    print(data)
+        if response.status_code != 200:
+            return "Current Location"
 
-    address = data.get("address", {})
+        data = response.json()
 
-    return (
-        address.get("city")
-        or address.get("town")
-        or address.get("village")
-        or "Current Location"
-    )
+        print(data)
 
+        address = data.get("address", {})
+
+        return (
+            address.get("city")
+            or address.get("town")
+            or address.get("village")
+            or address.get("suburb")
+            or "Current Location"
+        )
+
+    except Exception as e:
+
+        print("Reverse Geocoding Error:", e)
+
+        return "Current Location"
